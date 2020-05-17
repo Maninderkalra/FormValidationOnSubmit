@@ -1,0 +1,55 @@
+<div class="container">
+    <div class="row justify-content-center mb-3 mt-3">
+        <h4>Submit Form Validation on Template Form</h4>
+    </div>
+    <div class="row justify-content-center"  *ngIf="!isSubmitted">
+        <form class="col-md-4 col-lg-4" #frmTemplate="ngForm" (ngSubmit)="frmTemplate.form.valid && onSubmit()">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input id="name" name="name" [(ngModel)]="formDetails.name" 
+                #name="ngModel" class="form-control" type="text"
+                [ngClass]="{'is-invalid':frmTemplate.submitted && !name.valid}" required>
+                <div *ngIf="frmTemplate.submitted && !name.valid" class="invalid-feedback">
+                    <div *ngIf="name.errors.required">Name is required</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input id="password" name="password" [(ngModel)]="formDetails.password" 
+                 #password="ngModel" [ngClass]="{'is-invalid':frmTemplate.submitted && !password.valid}"
+                 class="form-control" type="password" minlength="6" required>
+                 <div *ngIf="frmTemplate.submitted && !password.valid" class="invalid-feedback">
+                    <div *ngIf="password.errors.required">Password is required</div>
+                    <div *ngIf="password.errors.minlength">Password must be at least 6 characters</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input id="email" class="form-control" type="email"  name="email" 
+                [(ngModel)]="formDetails.email" #email="ngModel"
+                [ngClass]="{'is-invalid':frmTemplate.submitted && !email.valid}" pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+                required>
+                <div *ngIf="frmTemplate.submitted && !email.valid" class="invalid-feedback">
+                    <div *ngIf="email.errors.required">Email is required</div>
+                    <div *ngIf="email.errors.pattern">Email  should ne in correct pattern</div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-success mt-2">Submit</button>
+        </form>     
+    </div>
+
+    <div *ngIf="isSubmitted">
+        <div class="row justify-content-center">
+            <div class="col-6">
+                <p class="d-block">Name : {{formDetails.name}}</p>
+                <p class="d-block">Email : {{formDetails.email}}</p>
+                <p class="d-block">Password : {{formDetails.password}}</p>
+            </div>
+        </div>
+        <div class="row justify-content-center">        
+            <button class="btn btn-success mt-2" (click)="isSubmitted=false">Edit</button>
+        </div>
+    </div> 
+</div>
